@@ -7,6 +7,8 @@ with any Java 11+ runtime.
 
 ![MD Edit banner](samples/images/banner.png)
 
+![MD Edit with samples/sample.md open: Markdown text on the left, live styled preview on the right](docs/screenshot.png)
+
 ## Features
 
 - Split view: plain-text editor on the left, live rendered preview on the right
@@ -242,6 +244,7 @@ src/main/resources/com/mdedit/ guide.md (Help > Markdown Guide)
 samples/                       sample.md demo document and images
 src/main/version/com/mdedit/   version.properties template (Maven only)
 icons/md-edit.png              application icon
+docs/screenshot.png            README screenshot
 build.sh, build.bat, pom.xml   build scripts
 md-edit, install-linux.sh      Linux launcher command and installer
 VERSION                        current version number
