@@ -6,7 +6,7 @@
 
     <groupId>com.mdedit</groupId>
     <artifactId>md-edit</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>MD Edit</name>

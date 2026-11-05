@@ -1328,7 +1328,43 @@ public class EditorFrame extends JFrame {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-    private static List<Image> createIcons() {
+    /** Application icon in several sizes, from the bundled md-edit.png (drawn fallback if missing). */
+    static List<Image> createIcons() {
+        List<Image> icons = new ArrayList<>();
+        try (java.io.InputStream in = EditorFrame.class.getResourceAsStream("/com/mdedit/md-edit.png")) {
+            java.awt.image.BufferedImage src = in == null ? null : javax.imageio.ImageIO.read(in);
+            if (src != null) {
+                for (int size : new int[]{16, 24, 32, 48, 64, 128, 256}) {
+                    icons.add(scaleIcon(src, size));
+                }
+                return icons;
+            }
+        } catch (java.io.IOException ignored) {
+            // fall back to the drawn icon
+        }
+        return drawIcons();
+    }
+
+    /** High-quality downscale by repeated halving, then a final bicubic step. */
+    private static java.awt.image.BufferedImage scaleIcon(java.awt.image.BufferedImage src, int size) {
+        java.awt.image.BufferedImage cur = src;
+        int w = src.getWidth();
+        do {
+            w = Math.max(size, w / 2);
+            java.awt.image.BufferedImage next =
+                    new java.awt.image.BufferedImage(w, w, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+            java.awt.Graphics2D g = next.createGraphics();
+            g.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION,
+                    java.awt.RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+            g.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_QUALITY);
+            g.drawImage(cur, 0, 0, w, w, null);
+            g.dispose();
+            cur = next;
+        } while (w > size);
+        return cur;
+    }
+
+    private static List<Image> drawIcons() {
         List<Image> icons = new ArrayList<>();
         for (int size : new int[]{16, 32, 64, 128}) {
             java.awt.image.BufferedImage img =

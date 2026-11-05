@@ -243,7 +243,7 @@ src/main/java/com/mdedit/      Java sources
 src/main/resources/com/mdedit/ guide.md (Help > Markdown Guide)
 samples/                       sample.md demo document and images
 src/main/version/com/mdedit/   version.properties template (Maven only)
-icons/md-edit.png              application icon
+src/main/resources/com/mdedit/md-edit.png  application icon (window, taskbar, desktop)
 docs/screenshot.png            README screenshot
 build.sh, build.bat, pom.xml   build scripts
 md-edit, install-linux.sh      Linux launcher command and installer

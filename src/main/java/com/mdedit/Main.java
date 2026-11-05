@@ -47,11 +47,25 @@ public final class Main {
                     // keep whatever is installed
                 }
             }
+            setDockIcon();
             EditorFrame frame = new EditorFrame();
             if (toOpen != null) {
                 frame.loadFile(toOpen);
             }
             frame.showWindow();
         });
+    }
+
+    /** macOS dock icon (other platforms use the window icons set by EditorFrame). */
+    private static void setDockIcon() {
+        try {
+            if (java.awt.Taskbar.isTaskbarSupported()
+                    && java.awt.Taskbar.getTaskbar().isSupported(java.awt.Taskbar.Feature.ICON_IMAGE)) {
+                java.util.List<java.awt.Image> icons = EditorFrame.createIcons();
+                java.awt.Taskbar.getTaskbar().setIconImage(icons.get(icons.size() - 1));
+            }
+        } catch (RuntimeException ignored) {
+            // not supported on this platform/desktop
+        }
     }
 }
