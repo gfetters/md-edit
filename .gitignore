@@ -1,0 +1,21 @@
+# Build output
+build/
+dist/
+target/
+*.class
+
+# Release bundles
+*.zip
+
+# Local working notes
+TASKS.md
+
+# IDE / OS clutter
+.idea/
+.vscode/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db

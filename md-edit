@@ -1,0 +1,41 @@
+#!/bin/sh
+# Launches MD Edit.
+#
+# Usage:  md-edit [file.md]
+#
+# Finds dist/md-edit.jar next to this script (symlinks are followed, so you can
+# link this script into a folder on your PATH, e.g. ~/.local/bin/md-edit).
+# The editor runs in the background so the terminal is free again right away.
+# Set MD_EDIT_FOREGROUND=1 to keep it attached to the terminal (shows errors).
+
+# Resolve this script's real location, following symlinks.
+SELF=$0
+while [ -L "$SELF" ]; do
+    LINK=$(readlink "$SELF")
+    case "$LINK" in
+        /*) SELF=$LINK ;;
+        *) SELF=$(dirname "$SELF")/$LINK ;;
+    esac
+done
+DIR=$(cd "$(dirname "$SELF")" && pwd)
+JARFILE="$DIR/dist/md-edit.jar"
+
+if [ ! -f "$JARFILE" ]; then
+    echo "md-edit: $JARFILE not found. Build it first with $DIR/build.sh" >&2
+    exit 1
+fi
+
+if [ -n "${JAVA_HOME:-}" ] && [ -x "$JAVA_HOME/bin/java" ]; then
+    JAVA="$JAVA_HOME/bin/java"
+elif command -v java >/dev/null 2>&1; then
+    JAVA=java
+else
+    echo "md-edit: Java not found. Install Java 11 or newer." >&2
+    exit 1
+fi
+
+if [ -n "${MD_EDIT_FOREGROUND:-}" ]; then
+    exec "$JAVA" -jar "$JARFILE" "$@"
+fi
+
+nohup "$JAVA" -jar "$JARFILE" "$@" >/dev/null 2>&1 </dev/null &
